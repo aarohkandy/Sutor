@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import { Atmosphere } from "@/components/Atmosphere";
 import { ResultsSummary } from "@/components/ResultsSummary";
 import { getResultsSession } from "@/lib/session";
 
@@ -10,11 +11,12 @@ export default function ResultsPage() {
 
   if (!results) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-background px-6 text-center">
-        <div>
-          <h1 className="font-display text-4xl">No analysis is ready yet.</h1>
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-center">
+        <Atmosphere variant="results" />
+        <div className="relative z-10">
+          <h1 className="font-display text-4xl text-warm">No analysis is ready yet.</h1>
           <p className="mt-4 text-sm text-muted">Start a practice session first, then come back here.</p>
-          <Link href="/" className="mt-6 inline-block border-b border-accent pb-1 text-sm">
+          <Link href="/" className="mt-6 inline-block border-b border-accent pb-1 text-sm text-warm">
             Return home
           </Link>
         </div>

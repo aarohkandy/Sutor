@@ -8,7 +8,7 @@ interface StringAnimationProps {
   warm: number;
   amplitude: number;
   phase: number;
-  fall: number;
+  release: number;
   drift: number;
   opacity: number;
 }
@@ -28,7 +28,7 @@ function buildPath({
   amplitude,
   phase,
   drift,
-  fall
+  release
 }: {
   x: number;
   width: number;
@@ -37,23 +37,29 @@ function buildPath({
   amplitude: number;
   phase: number;
   drift: number;
-  fall: number;
+  release: number;
 }): string {
-  const segments = 20;
+  const segments = 28;
   const visibleHeight = Math.max(0, height * rise);
   const startY = height - visibleHeight;
-  const easedFall = fall * fall;
-  const dropY = easedFall * height * 0.55;
-  const driftX = drift * easedFall;
-  const left = x + driftX;
+  const easedRelease = release * release;
+  const topDrift = drift * easedRelease * 0.28;
+  const bottomDrift = drift * easedRelease * 0.92;
+  const verticalSlip = easedRelease * height * 0.075;
+  const activeAmplitude = amplitude * (1 - easedRelease * 0.78);
   const points: string[] = [];
 
   for (let index = 0; index <= segments; index += 1) {
     const t = index / segments;
-    const y = startY + t * visibleHeight + dropY;
     const envelope = Math.sin(Math.PI * t);
-    const wave = Math.sin(t * Math.PI * 4.5 + phase) * amplitude * envelope;
-    const localX = left + wave * Math.min(width * 0.03, 18);
+    const firstMode = Math.sin(phase) * envelope;
+    const secondMode = Math.sin(phase * 1.65 + x * 0.0025) * Math.sin(2 * Math.PI * t) * 0.16;
+    const releaseDrift = topDrift + (bottomDrift - topDrift) * t;
+    const releaseSag = easedRelease * height * 0.028 * envelope * envelope;
+    const wave = (firstMode + secondMode) * activeAmplitude;
+    const localX = x + releaseDrift + wave * Math.min(width * 0.008, 8);
+    const y = startY + t * visibleHeight + verticalSlip * t + releaseSag;
+
     points.push(`${index === 0 ? "M" : "L"} ${localX.toFixed(2)} ${y.toFixed(2)}`);
   }
 
@@ -62,13 +68,13 @@ function buildPath({
 
 export function StringAnimation(props: StringAnimationProps) {
   const stroke = mixColor(props.warm);
-  const width = 1.1 + (1 - Math.abs(0.5 - props.x / props.width) * 2) * 1.3;
+  const strokeWidth = 1 + (1 - Math.abs(0.5 - props.x / props.width) * 2) * 1.1;
 
   return (
     <path
       d={buildPath(props)}
       stroke={stroke}
-      strokeWidth={width}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       fill="none"
       opacity={props.opacity}

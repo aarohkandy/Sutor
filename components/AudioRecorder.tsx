@@ -248,7 +248,7 @@ export function AudioRecorder({ noiseSensitivity, onOnset, onFinished }: AudioRe
       } else {
         compatibilityModeRef.current = true;
         setCompatibilityMode(true);
-        setSpeechNotice("Using compatibility audio mode — for best results, use Chrome or Edge.");
+        setSpeechNotice("Using compatibility audio mode - for best results, use Chrome or Edge.");
         const scriptProcessor = context.createScriptProcessor(2048, 1, 1);
         scriptProcessor.onaudioprocess = (event) => {
           const input = event.inputBuffer.getChannelData(0);
@@ -280,8 +280,8 @@ export function AudioRecorder({ noiseSensitivity, onOnset, onFinished }: AudioRe
 
   if (permissionDenied) {
     return (
-      <div className="border border-line bg-surface px-6 py-8 text-center">
-        <h2 className="font-display text-3xl">Microphone access is needed</h2>
+      <div className="border border-line bg-[rgba(17,17,17,0.68)] px-6 py-8 text-center">
+        <h2 className="font-display text-3xl text-warm">Microphone access is needed</h2>
         <p className="mx-auto mt-4 max-w-xl text-sm text-muted">
           Allow microphone access in your browser&apos;s site settings, then try recording again. In Chrome and Edge this is in the lock icon near the address bar. In Safari, check Settings for This Website.
         </p>
@@ -301,16 +301,17 @@ export function AudioRecorder({ noiseSensitivity, onOnset, onFinished }: AudioRe
           )}
           {compatibilityMode ? <span className="sr-only">Compatibility mode active</span> : null}
         </div>
+
         <div className="flex items-center gap-6">
           {phase === "idle" ? (
-            <button type="button" onClick={startRecording} className="text-left">
-              ● Record
+            <button type="button" onClick={startRecording} className="text-left text-warm">
+              Record
             </button>
           ) : null}
           {phase === "calibrating" ? <span>Calibrating...</span> : null}
           {phase === "recording" || phase === "stopping" ? (
-            <button type="button" onClick={stopRecording} disabled={phase === "stopping"}>
-              ■ Stop
+            <button type="button" onClick={stopRecording} disabled={phase === "stopping"} className="text-warm">
+              Stop
             </button>
           ) : null}
         </div>

@@ -9,14 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#F8F8F6",
-        foreground: "#0A0A0A",
-        surface: "#FFFFFF",
-        border: "#CCCCCC",
+        background: "#0A0A0A",
+        foreground: "#F8F8F6",
+        surface: "#111111",
+        border: "rgba(248, 248, 246, 0.16)",
         muted: "#888888",
-        line: "#E5E5E5",
+        line: "rgba(248, 248, 246, 0.08)",
         accent: "#C9A84C",
-        warm: "#F7F3E9"
+        warm: "#F8F8F6"
       },
       fontFamily: {
         body: [

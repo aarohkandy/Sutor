@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Atmosphere } from "@/components/Atmosphere";
 import { buildTeacherPrompt, generateOllamaSummary, pingOllama } from "@/lib/ollama";
 import { STORAGE_KEYS, getStringSetting, setLocalSetting } from "@/lib/storage";
 import type { ActualNote, AlignedNote, AnalysisStats, ExpectedNote, LibraryPiece, SpeechEvent } from "@/lib/types";
@@ -133,9 +134,12 @@ export function AnalysisPipeline({
 
   if (state === "needs_url" || state === "offline" || state === "error") {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center px-6 text-center">
-        <div className="w-full max-w-md space-y-6">
-          <h2 className="font-display text-4xl">{state === "needs_url" ? "Add your analysis brain" : state === "offline" ? "Your analysis brain is offline." : "Analysis hit a snag."}</h2>
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-center">
+        <Atmosphere variant="record" />
+        <div className="relative z-10 w-full max-w-md space-y-6">
+          <h2 className="font-display text-4xl text-warm">
+            {state === "needs_url" ? "Add your analysis brain" : state === "offline" ? "Your analysis brain is offline." : "Analysis hit a snag."}
+          </h2>
           <p className="text-sm text-muted">
             {state === "needs_url"
               ? "Paste your Ollama Cloudflare Tunnel URL to let Sutor ask Gemma for the written summary."
@@ -147,10 +151,10 @@ export function AnalysisPipeline({
             value={ollamaUrl}
             onChange={(event) => setOllamaUrl(event.target.value)}
             placeholder="https://your-tunnel.trycloudflare.com"
-            className="w-full border border-border px-3 py-3 outline-none transition-colors focus:border-accent"
+            className="w-full border border-border bg-[rgba(17,17,17,0.68)] px-3 py-3 outline-none transition-colors focus:border-accent"
           />
           <div className="flex items-center justify-center gap-8 text-sm">
-            <button type="button" onClick={saveAndRetry} className="border-b border-accent pb-0.5">
+            <button type="button" onClick={saveAndRetry} className="border-b border-accent pb-0.5 text-warm">
               {state === "offline" ? "Retry" : "Save"}
             </button>
             <button type="button" onClick={onCancel} className="quiet-link">
@@ -163,9 +167,10 @@ export function AnalysisPipeline({
   }
 
   return (
-    <div className="relative flex min-h-[60vh] items-center justify-center px-6 text-center">
-      <div>
-        <h2 className="font-display text-5xl">Analyzing...</h2>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-center">
+      <Atmosphere variant="record" />
+      <div className="relative z-10">
+        <h2 className="font-display text-5xl text-warm">Analyzing...</h2>
       </div>
       <div className="absolute inset-x-0 bottom-0 h-px origin-left bg-accent animate-growLine" />
     </div>

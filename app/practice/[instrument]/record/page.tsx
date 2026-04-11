@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnalysisPipeline } from "@/components/AnalysisPipeline";
+import { Atmosphere } from "@/components/Atmosphere";
 import { AudioRecorder } from "@/components/AudioRecorder";
 import { SheetMusicRenderer } from "@/components/SheetMusicRenderer";
 import { clearRecordedBlob, getRecordedBlob, setRecordedBlob } from "@/lib/audio-session-store";
@@ -14,6 +15,31 @@ import type { RecordingSessionPayload, SpeechEvent } from "@/lib/types";
 interface AnalysisContext {
   noiseFloor: number;
   speechEvents: SpeechEvent[];
+}
+
+function SessionMessage({
+  title,
+  description,
+  actionLabel,
+  onAction
+}: {
+  title: string;
+  description: string;
+  actionLabel: string;
+  onAction: () => void;
+}) {
+  return (
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-center">
+      <Atmosphere variant="record" />
+      <div className="relative z-10 max-w-xl">
+        <h1 className="font-display text-4xl text-warm">{title}</h1>
+        <p className="mt-4 text-sm text-muted">{description}</p>
+        <button type="button" onClick={onAction} className="mt-6 border-b border-accent pb-1 text-sm text-warm">
+          {actionLabel}
+        </button>
+      </div>
+    </main>
+  );
 }
 
 export default function RecordPage() {
@@ -56,31 +82,38 @@ export default function RecordPage() {
     return Array.from({ length: pageCount }, (_, index) => Math.ceil((count * (index + 1)) / pageCount));
   }, [pageCount, session?.expectedNotes]);
 
-  const handleAdvance = () => {
+  const handleAdvance = useCallback(() => {
     setCurrentPage((page) => Math.min(page + 1, Math.max(0, pageCount - 1)));
     setPageStartedAt(Date.now());
-  };
+  }, [pageCount]);
 
-  const handleOnset = (count: number) => {
-    if (count >= (onsetThresholds[currentPage] ?? Number.POSITIVE_INFINITY) && currentPage < pageCount - 1) {
-      setCurrentPage((page) => Math.min(page + 1, pageCount - 1));
-      setPageStartedAt(Date.now());
-    }
-  };
+  const handlePageCount = useCallback((count: number) => {
+    const nextCount = Math.max(1, count);
+    setPageCount((previous) => (previous === nextCount ? previous : nextCount));
+    setCurrentPage((previous) => Math.min(previous, Math.max(0, nextCount - 1)));
+    setPageStartedAt(Date.now());
+  }, []);
+
+  const handleOnset = useCallback(
+    (count: number) => {
+      if (count >= (onsetThresholds[currentPage] ?? Number.POSITIVE_INFINITY) && currentPage < pageCount - 1) {
+        setCurrentPage((page) => Math.min(page + 1, pageCount - 1));
+        setPageStartedAt(Date.now());
+      }
+    },
+    [currentPage, onsetThresholds, pageCount]
+  );
 
   const noiseSensitivity = getNumberSetting(STORAGE_KEYS.noiseSensitivity, 5);
 
   if (!session) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-background px-6 text-center">
-        <div>
-          <h1 className="font-display text-4xl">This session has expired.</h1>
-          <p className="mt-4 text-sm text-muted">Choose your piece again to restart the practice flow.</p>
-          <Link href="/" className="mt-6 inline-block border-b border-accent pb-1 text-sm">
-            Return home
-          </Link>
-        </div>
-      </main>
+      <SessionMessage
+        title="This session has expired."
+        description="Choose your piece again to restart the practice flow."
+        actionLabel="Return home"
+        onAction={() => router.push("/")}
+      />
     );
   }
 
@@ -88,15 +121,12 @@ export default function RecordPage() {
     const blob = getRecordedBlob();
     if (!blob) {
       return (
-        <main className="flex min-h-screen items-center justify-center bg-background px-6 text-center">
-          <div>
-            <h1 className="font-display text-4xl">The recording is no longer in memory.</h1>
-            <p className="mt-4 text-sm text-muted">Sutor only keeps the raw audio in memory for this session. Start the take again to continue.</p>
-            <button type="button" onClick={() => setAnalysisContext(null)} className="mt-6 border-b border-accent pb-1 text-sm">
-              Back to score
-            </button>
-          </div>
-        </main>
+        <SessionMessage
+          title="The recording is no longer in memory."
+          description="Sutor only keeps the raw audio in memory for this session. Start the take again to continue."
+          actionLabel="Back to score"
+          onAction={() => setAnalysisContext(null)}
+        />
       );
     }
 
@@ -127,17 +157,24 @@ export default function RecordPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background px-6 py-6 sm:px-10">
-      <div className="mx-auto max-w-6xl">
+    <main className="relative min-h-screen overflow-hidden px-6 py-6 sm:px-10">
+      <Atmosphere variant="record" />
+
+      <div className="relative z-10 mx-auto max-w-6xl">
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <Link href={`/practice/${session.piece.instrument}`} className="quiet-link text-sm">
-              ← Back
+              &larr; Back
             </Link>
-            <h1 className="mt-4 font-display text-4xl">{session.piece.title}</h1>
+            <h1 className="mt-4 font-display text-4xl text-warm">{session.piece.title}</h1>
             <p className="mt-2 text-sm text-muted">
               {session.piece.composer}
-              {session.piece.subtitle ? ` • ${session.piece.subtitle}` : ""}
+              {session.piece.subtitle ? (
+                <>
+                  <span aria-hidden="true"> • </span>
+                  {session.piece.subtitle}
+                </>
+              ) : null}
             </p>
           </div>
 
@@ -150,7 +187,7 @@ export default function RecordPage() {
                 setPageStartedAt(Date.now());
               }}
               inputMode="numeric"
-              className="mt-2 w-full border border-border px-3 py-2 text-right outline-none focus:border-accent"
+              className="mt-2 w-full border border-border bg-[rgba(17,17,17,0.68)] px-3 py-2 text-right outline-none focus:border-accent"
             />
             <span className="mt-1 block text-[11px] text-muted">seconds</span>
           </label>
@@ -161,11 +198,7 @@ export default function RecordPage() {
           currentPage={currentPage}
           countdownProgress={countdownProgress}
           onAdvance={handleAdvance}
-          onPageCount={(count) => {
-            setPageCount(Math.max(1, count));
-            setCurrentPage(0);
-            setPageStartedAt(Date.now());
-          }}
+          onPageCount={handlePageCount}
         />
 
         <div className="mt-4 flex items-center justify-between text-xs text-muted">
