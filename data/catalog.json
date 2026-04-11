@@ -1,0 +1,229 @@
+[
+  {
+    "id": "violin-greensleeves",
+    "title": "Greensleeves to a Ground with Division",
+    "composer": "Anonymous",
+    "instrument": "violin",
+    "instrumentLine": "Violin",
+    "era": "Baroque",
+    "source": "Traditional source, public-domain Mutopia edition",
+    "license": "Public Domain",
+    "difficulty": "starter",
+    "suggested": true,
+    "midiAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/Anonymous/division-violin-two-27/division-violin-two-27.mid",
+      "kind": "file",
+      "format": "midi"
+    },
+    "pdfAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/Anonymous/division-violin-two-27/division-violin-two-27-a4.pdf",
+      "kind": "file",
+      "format": "pdf"
+    }
+  },
+  {
+    "id": "violin-old-simon",
+    "title": "Old Simon the King",
+    "composer": "Anonymous",
+    "instrument": "violin",
+    "instrumentLine": "Violin",
+    "era": "Baroque",
+    "source": "Public-domain Mutopia edition",
+    "license": "Public Domain",
+    "difficulty": "starter",
+    "suggested": true,
+    "midiAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/Anonymous/division-violin-04/division-violin-04-mids.zip",
+      "kind": "zip",
+      "format": "midi"
+    },
+    "pdfAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/Anonymous/division-violin-04/division-violin-04-a4.pdf",
+      "kind": "file",
+      "format": "pdf"
+    }
+  },
+  {
+    "id": "violin-johnny-cock",
+    "title": "Johnny Cock Thy Beaver: A Scotch Tune to a Ground",
+    "composer": "Anonymous",
+    "instrument": "violin",
+    "instrumentLine": "Violin",
+    "era": "Baroque",
+    "source": "Public-domain Mutopia edition",
+    "license": "Public Domain",
+    "difficulty": "intermediate",
+    "suggested": false,
+    "midiAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/Anonymous/division-violin-23/division-violin-23-mids.zip",
+      "kind": "zip",
+      "format": "midi"
+    },
+    "pdfAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/Anonymous/division-violin-23/division-violin-23-a4.pdf",
+      "kind": "file",
+      "format": "pdf"
+    }
+  },
+  {
+    "id": "violin-bwv1017",
+    "title": "Sonata for Violin and Clavier No. 4",
+    "composer": "J. S. Bach",
+    "instrument": "violin",
+    "instrumentLine": "Violin and Clavier",
+    "subtitle": "BWV 1017",
+    "era": "Baroque",
+    "source": "Mutopia public-domain edition",
+    "license": "Public Domain",
+    "difficulty": "advanced",
+    "suggested": false,
+    "midiAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV1017/bwv1017/bwv1017-mids.zip",
+      "kind": "zip",
+      "format": "midi"
+    },
+    "pdfAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV1017/bwv1017/bwv1017-a4-pdfs.zip",
+      "kind": "zip",
+      "format": "pdf"
+    }
+  },
+  {
+    "id": "flute-siciliano",
+    "title": "Siciliano",
+    "composer": "J. S. Bach",
+    "instrument": "flute",
+    "instrumentLine": "Flute and Guitar",
+    "subtitle": "BWV 1031",
+    "era": "Baroque",
+    "source": "New adaptation from Bach-Gesellschaft",
+    "license": "Public Domain",
+    "difficulty": "starter",
+    "suggested": true,
+    "midiAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV1031/bach_siciliano_bmv_1031/bach_siciliano_bmv_1031.mid",
+      "kind": "file",
+      "format": "midi"
+    },
+    "pdfAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV1031/bach_siciliano_bmv_1031/bach_siciliano_bmv_1031-a4.pdf",
+      "kind": "file",
+      "format": "pdf"
+    }
+  },
+  {
+    "id": "flute-air-g-string",
+    "title": "Air ('on the G string')",
+    "composer": "J. S. Bach",
+    "instrument": "flute",
+    "instrumentLine": "Flute and Guitar",
+    "subtitle": "BWV 1068",
+    "era": "Baroque",
+    "source": "New adaptation from Bach-Gesellschaft",
+    "license": "Public Domain",
+    "difficulty": "starter",
+    "suggested": true,
+    "midiAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV1068/bach_air_bmv_1068/bach_air_bmv_1068.mid",
+      "kind": "file",
+      "format": "midi"
+    },
+    "pdfAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV1068/bach_air_bmv_1068/bach_air_bmv_1068-a4.pdf",
+      "kind": "file",
+      "format": "pdf"
+    }
+  },
+  {
+    "id": "flute-partita-am",
+    "title": "Partita in A Minor for Solo Flute",
+    "composer": "J. S. Bach",
+    "instrument": "flute",
+    "instrumentLine": "Flute",
+    "subtitle": "BWV 1013",
+    "era": "Baroque",
+    "source": "IMSLP manuscript source",
+    "license": "Public Domain",
+    "difficulty": "intermediate",
+    "suggested": false,
+    "midiAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV1002/partita-1/partita-1-mids.zip",
+      "kind": "zip",
+      "format": "midi"
+    },
+    "pdfAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV1002/partita-1/partita-1-a4-pdfs.zip",
+      "kind": "zip",
+      "format": "pdf"
+    }
+  },
+  {
+    "id": "flute-bwv1030",
+    "title": "Sonata in B Minor for Flute and Harpsichord",
+    "composer": "J. S. Bach",
+    "instrument": "flute",
+    "instrumentLine": "Flute and Harpsichord/Piano",
+    "subtitle": "BWV 1030",
+    "era": "Baroque",
+    "source": "Autograph source",
+    "license": "Public Domain",
+    "difficulty": "advanced",
+    "suggested": false,
+    "midiAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV1030/sonata-flute-cembalo-bwv1030/sonata-flute-cembalo-bwv1030-mids.zip",
+      "kind": "zip",
+      "format": "midi"
+    },
+    "pdfAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV1030/sonata-flute-cembalo-bwv1030/sonata-flute-cembalo-bwv1030-a4-pdfs.zip",
+      "kind": "zip",
+      "format": "pdf"
+    }
+  },
+  {
+    "id": "viola-rolla-duet-1",
+    "title": "6 Duetti a Due Viole: No. 1",
+    "composer": "A. Rolla",
+    "instrument": "viola",
+    "instrumentLine": "Viola",
+    "subtitle": "Duetto No. 1 (BI 9)",
+    "era": "Classical",
+    "source": "IMSLP manuscript source",
+    "license": "Public Domain",
+    "difficulty": "starter",
+    "suggested": true,
+    "midiAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/RollaA/6_duos_for_2_violas/duet_1_BI_9/duet_1_BI_9-mids.zip",
+      "kind": "zip",
+      "format": "midi"
+    },
+    "pdfAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/RollaA/6_duos_for_2_violas/duet_1_BI_9/duet_1_BI_9-a4-pdfs.zip",
+      "kind": "zip",
+      "format": "pdf"
+    }
+  },
+  {
+    "id": "viola-rolla-torinesi",
+    "title": "Sei Duetti a Due Viole",
+    "composer": "A. Rolla",
+    "instrument": "viola",
+    "instrumentLine": "Viola",
+    "subtitle": "Torinesi manuscript",
+    "era": "Classical",
+    "source": "Torinesi manuscript source",
+    "license": "Public Domain",
+    "difficulty": "intermediate",
+    "suggested": false,
+    "midiAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/RollaA/Torinesi/tor_1/tor_1-mids.zip",
+      "kind": "zip",
+      "format": "midi"
+    },
+    "pdfAsset": {
+      "url": "https://www.mutopiaproject.org/ftp/RollaA/Torinesi/tor_1/tor_1-a4-pdfs.zip",
+      "kind": "zip",
+      "format": "pdf"
+    }
+  }
+]
