@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
+import { StringAnimation } from "@/components/StringAnimation";
 
 interface LoadingAnimationProps {
   onComplete: () => void;
@@ -12,97 +13,38 @@ interface StringState {
   rise: number;
   warm: number;
   amplitude: number;
-  release: number;
-  drift: number;
-  opacity: number;
-  phaseOffset: number;
-}
-
-interface GlowState {
-  x: number;
-  opacity: number;
-}
-
-const TOTAL_DURATION = 2.6;
-
-function mixColor(progress: number): string {
-  const start = [255, 255, 255];
-  const end = [248, 248, 246];
-  const channel = start.map((value, index) => Math.round(value + (end[index] - value) * progress));
-  return `rgb(${channel[0]}, ${channel[1]}, ${channel[2]})`;
-}
-
-function buildPath({
-  x,
-  width,
-  height,
-  rise,
-  amplitude,
-  phase,
-  drift,
-  release
-}: {
-  x: number;
-  width: number;
-  height: number;
-  rise: number;
-  amplitude: number;
   phase: number;
+  fall: number;
   drift: number;
-  release: number;
-}): string {
-  const segments = 32;
-  const visibleHeight = Math.max(0, height * rise);
-  const startY = height - visibleHeight;
-  const easedRelease = release * release;
-  const topDrift = drift * easedRelease * 0.3;
-  const bottomDrift = drift * easedRelease;
-  const verticalSlip = easedRelease * height * 0.05;
-  const activeAmplitude = amplitude * (1 - easedRelease * 0.8);
-  const points: string[] = [];
-
-  for (let index = 0; index <= segments; index += 1) {
-    const t = index / segments;
-    const envelope = Math.sin(Math.PI * t);
-    const firstMode = Math.sin(phase) * envelope;
-    const secondMode = Math.sin(phase * 1.55 + x * 0.0022) * Math.sin(2 * Math.PI * t) * 0.14;
-    const releaseDrift = topDrift + (bottomDrift - topDrift) * t;
-    const releaseSag = easedRelease * height * 0.022 * envelope * envelope;
-    const wave = (firstMode + secondMode) * activeAmplitude;
-    const localX = x + releaseDrift + wave * Math.min(width * 0.007, 7);
-    const y = startY + t * visibleHeight + verticalSlip * t + releaseSag;
-
-    points.push(`${index === 0 ? "M" : "L"} ${localX.toFixed(2)} ${y.toFixed(2)}`);
-  }
-
-  return points.join(" ");
+  opacity: number;
 }
+
+const DURATION = 2.15;
 
 export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
   const overlayRef = useRef<HTMLDivElement | null>(null);
-  const glowRef = useRef<SVGEllipseElement | null>(null);
-  const pathRefs = useRef<Array<SVGPathElement | null>>([]);
-  const rafRef = useRef<number | null>(null);
   const completedRef = useRef(false);
-  const stringStatesRef = useRef<StringState[]>([]);
-  const glowStateRef = useRef<GlowState>({ x: 0.22, opacity: 0.16 });
   const [viewport, setViewport] = useState({ width: 1280, height: 800 });
+  const [, forceRender] = useState(0);
+  const strings = useMemo<StringState[]>(
+    () => {
+      const center = viewport.width / 2;
+      const gap = Math.max(20, Math.min(viewport.width * 0.03, 34));
 
-  const baseStrings = useMemo<StringState[]>(() => {
-    const center = viewport.width / 2;
-    const gap = Math.max(20, Math.min(viewport.width * 0.03, 34));
-
-    return Array.from({ length: 5 }, (_, index) => ({
-      x: center + (index - 2) * gap,
-      rise: 0.22,
-      warm: 0,
-      amplitude: 0,
-      release: 0,
-      drift: [-22, -11, 0, 11, 22][index],
-      opacity: 0.78,
-      phaseOffset: index * 0.1
-    }));
-  }, [viewport]);
+      return Array.from({ length: 5 }, (_, index) => ({
+        x: center + (index - 2) * gap,
+        rise: 0.12,
+        warm: 0,
+        amplitude: 0,
+        phase: index * 0.2,
+        fall: 0,
+        drift: [-32, -16, 0, 16, 32][index],
+        opacity: 1
+      }));
+    },
+    [viewport]
+  );
+  const glow = useRef({ x: -0.08, opacity: 0.14 });
 
   useLayoutEffect(() => {
     const updateViewport = () => {
@@ -118,99 +60,51 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
   }, []);
 
   useLayoutEffect(() => {
-    stringStatesRef.current = baseStrings.map((string) => ({ ...string }));
-    glowStateRef.current = { x: 0.22, opacity: 0.16 };
-    completedRef.current = false;
-
-    const render = () => {
-      const now = performance.now() * 0.0044;
-      const strings = stringStatesRef.current;
-
-      strings.forEach((string, index) => {
-        const path = pathRefs.current[index];
-        if (!path) {
-          return;
-        }
-
-        path.setAttribute(
-          "d",
-          buildPath({
-            x: string.x,
-            width: viewport.width,
-            height: viewport.height,
-            rise: string.rise,
-            amplitude: string.amplitude,
-            phase: now + string.phaseOffset,
-            drift: string.drift,
-            release: string.release
-          })
-        );
-        path.setAttribute("stroke", mixColor(string.warm));
-        path.setAttribute("opacity", string.opacity.toFixed(3));
-      });
-
-      if (glowRef.current) {
-        glowRef.current.setAttribute("cx", `${(viewport.width * glowStateRef.current.x).toFixed(2)}`);
-        glowRef.current.setAttribute("opacity", glowStateRef.current.opacity.toFixed(3));
-      }
-
-      if (!completedRef.current) {
-        rafRef.current = window.requestAnimationFrame(render);
-      }
-    };
-
     const finish = () => {
       if (completedRef.current) {
         return;
       }
 
       completedRef.current = true;
-      if (rafRef.current) {
-        window.cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
       onComplete();
     };
-
-    render();
-
+    const ticker = () => forceRender((value) => value + 1);
     const timeline = gsap.timeline({
-      defaults: { overwrite: true },
       onComplete: () => {
-        finish();
+        gsap.delayedCall(0.02, finish);
       }
     });
+    const fallbackTimeout = window.setTimeout(finish, 2900);
 
-    stringStatesRef.current.forEach((string, index) => {
+    strings.forEach((string, index) => {
       timeline.to(
         string,
         {
           rise: 1,
-          opacity: 1,
-          duration: 0.72,
+          duration: 0.66,
           ease: "power2.out"
         },
-        index * 0.06
+        index * 0.07
       );
     });
 
     timeline.to(
-      glowStateRef.current,
+      glow.current,
       {
-        x: 0.9,
+        x: 1.06,
         opacity: 0.72,
-        duration: 0.82,
+        duration: 0.76,
         ease: "power1.inOut"
       },
-      0.5
+      0.56
     );
 
-    stringStatesRef.current.forEach((string, index) => {
+    strings.forEach((string, index) => {
       timeline.to(
         string,
         {
           warm: 1,
-          amplitude: 0.78 + index * 0.02,
+          amplitude: 0.8 + index * 0.02,
           duration: 0.42,
           ease: "sine.out"
         },
@@ -218,109 +112,92 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
       );
     });
 
-    stringStatesRef.current.forEach((string, index) => {
+    strings.forEach((string, index) => {
       timeline.to(
         string,
         {
           amplitude: 0.34 + index * 0.02,
-          duration: 0.54,
+          duration: 0.5,
           ease: "sine.inOut"
         },
-        1.22
+        1.18
       );
     });
-
-    stringStatesRef.current.forEach((string) => {
-      timeline.to(
-        string,
-        {
-          release: 1,
-          opacity: 0,
-          duration: 0.74,
-          ease: "power2.in"
-        },
-        1.68
-      );
-    });
-
-    timeline.to(
-      glowStateRef.current,
-      {
-        opacity: 0,
-        duration: 0.54,
-        ease: "power1.out"
-      },
-      1.7
-    );
 
     timeline.to(
       overlayRef.current,
       {
-        opacity: 0,
-        duration: 0.52,
-        ease: "power1.out"
+        backgroundColor: "#111111",
+        duration: 0.62,
+        ease: "power1.inOut"
       },
-      2.02
+      1.5
     );
 
-    const fallbackTimeout = window.setTimeout(finish, Math.round((TOTAL_DURATION + 0.7) * 1000));
+    strings.forEach((string) => {
+      timeline.to(
+        string,
+        {
+          fall: 1,
+          opacity: 0,
+          duration: 0.7,
+          ease: "power2.in"
+        },
+        1.5
+      );
+    });
 
+    const phaseTween = gsap.to(strings, {
+      phase: "+=14",
+      duration: DURATION,
+      ease: "none",
+      repeat: -1,
+      paused: false
+    });
+
+    gsap.ticker.add(ticker);
     return () => {
       window.clearTimeout(fallbackTimeout);
-      completedRef.current = true;
       timeline.kill();
-      if (rafRef.current) {
-        window.cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
+      phaseTween.kill();
+      gsap.ticker.remove(ticker);
     };
-  }, [baseStrings, onComplete, viewport.height, viewport.width]);
+  }, [onComplete, strings]);
 
   return (
     <div
       ref={overlayRef}
-      className="pointer-events-none fixed inset-0 z-50 bg-[#0A0A0A]"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0A0A0A]"
       aria-hidden="true"
     >
       <svg width={viewport.width} height={viewport.height} className="absolute inset-0 h-full w-full">
         <defs>
           <radialGradient id="sutor-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(201,168,76,0.44)" />
+            <stop offset="0%" stopColor="rgba(201,168,76,0.58)" />
             <stop offset="100%" stopColor="rgba(201,168,76,0)" />
           </radialGradient>
         </defs>
-
         <ellipse
-          ref={glowRef}
-          cx={viewport.width * 0.22}
+          cx={viewport.width * glow.current.x}
           cy={viewport.height * 0.46}
-          rx={viewport.width * 0.12}
-          ry={viewport.height * 0.24}
+          rx={viewport.width * 0.14}
+          ry={viewport.height * 0.26}
           fill="url(#sutor-glow)"
-          opacity="0.16"
+          opacity={glow.current.opacity}
         />
-
-        {baseStrings.map((_, index) => (
-          <path
+        {strings.map((string, index) => (
+          <StringAnimation
             key={index}
-            ref={(node) => {
-              pathRefs.current[index] = node;
-            }}
-            d={buildPath({
-              x: baseStrings[index].x,
-              width: viewport.width,
-              height: viewport.height,
-              rise: baseStrings[index].rise,
-              amplitude: baseStrings[index].amplitude,
-              phase: baseStrings[index].phaseOffset,
-              drift: baseStrings[index].drift,
-              release: baseStrings[index].release
-            })}
-            stroke="rgb(255, 255, 255)"
-            strokeWidth={1.45}
-            strokeLinecap="round"
-            fill="none"
-            opacity={baseStrings[index].opacity}
+            height={viewport.height}
+            width={viewport.width}
+            x={string.x}
+            rise={string.rise}
+            warm={string.warm}
+            amplitude={string.amplitude}
+            phase={string.phase}
+            fall={string.fall}
+            drift={string.drift}
+            opacity={string.opacity}
           />
         ))}
       </svg>

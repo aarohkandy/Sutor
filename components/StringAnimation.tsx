@@ -8,7 +8,7 @@ interface StringAnimationProps {
   warm: number;
   amplitude: number;
   phase: number;
-  release: number;
+  fall: number;
   drift: number;
   opacity: number;
 }
@@ -28,7 +28,7 @@ function buildPath({
   amplitude,
   phase,
   drift,
-  release
+  fall
 }: {
   x: number;
   width: number;
@@ -37,29 +37,26 @@ function buildPath({
   amplitude: number;
   phase: number;
   drift: number;
-  release: number;
+  fall: number;
 }): string {
-  const segments = 28;
+  const segments = 26;
   const visibleHeight = Math.max(0, height * rise);
   const startY = height - visibleHeight;
-  const easedRelease = release * release;
-  const topDrift = drift * easedRelease * 0.28;
-  const bottomDrift = drift * easedRelease * 0.92;
-  const verticalSlip = easedRelease * height * 0.075;
-  const activeAmplitude = amplitude * (1 - easedRelease * 0.78);
+  const easedFall = fall * fall;
+  const driftTop = drift * easedFall * 0.35;
+  const driftBottom = drift * easedFall;
+  const dropY = easedFall * height * 0.12;
+  const activeAmplitude = amplitude * (1 - easedFall * 0.82);
   const points: string[] = [];
 
   for (let index = 0; index <= segments; index += 1) {
     const t = index / segments;
     const envelope = Math.sin(Math.PI * t);
-    const firstMode = Math.sin(phase) * envelope;
-    const secondMode = Math.sin(phase * 1.65 + x * 0.0025) * Math.sin(2 * Math.PI * t) * 0.16;
-    const releaseDrift = topDrift + (bottomDrift - topDrift) * t;
-    const releaseSag = easedRelease * height * 0.028 * envelope * envelope;
-    const wave = (firstMode + secondMode) * activeAmplitude;
-    const localX = x + releaseDrift + wave * Math.min(width * 0.008, 8);
-    const y = startY + t * visibleHeight + verticalSlip * t + releaseSag;
-
+    const standingWave = Math.sin(phase) * envelope;
+    const sympatheticWave = Math.sin(phase * 1.55 + t * Math.PI * 2) * envelope * 0.12;
+    const driftX = driftTop + (driftBottom - driftTop) * t;
+    const localX = x + driftX + (standingWave + sympatheticWave) * activeAmplitude * Math.min(width * 0.008, 8);
+    const y = startY + t * visibleHeight + dropY * t;
     points.push(`${index === 0 ? "M" : "L"} ${localX.toFixed(2)} ${y.toFixed(2)}`);
   }
 
@@ -68,7 +65,7 @@ function buildPath({
 
 export function StringAnimation(props: StringAnimationProps) {
   const stroke = mixColor(props.warm);
-  const strokeWidth = 1 + (1 - Math.abs(0.5 - props.x / props.width) * 2) * 1.1;
+  const strokeWidth = 1.1 + (1 - Math.abs(0.5 - props.x / props.width) * 2) * 1.15;
 
   return (
     <path
