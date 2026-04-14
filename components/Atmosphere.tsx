@@ -10,13 +10,13 @@ const atmosphereThemes: Record<NonNullable<AtmosphereProps["variant"]>, {
 }> = {
   home: {
     base:
-      "radial-gradient(72rem 48rem at 50% 24%, rgba(248,248,246,0.13), rgba(248,248,246,0.03) 38%, rgba(10,10,10,0) 72%), linear-gradient(180deg, rgba(17,17,17,0.84) 0%, rgba(10,10,10,0.94) 44%, rgba(10,10,10,1) 100%)",
+      "radial-gradient(92rem 42rem at 50% 28%, rgba(248,248,246,0.12), rgba(248,248,246,0.04) 34%, rgba(10,10,10,0) 70%), linear-gradient(180deg, rgba(17,17,17,0.84) 0%, rgba(10,10,10,0.94) 44%, rgba(10,10,10,1) 100%)",
     primary:
-      "radial-gradient(46rem 30rem at 18% 18%, rgba(248,248,246,0.09), rgba(248,248,246,0.03) 46%, rgba(10,10,10,0) 76%), radial-gradient(40rem 26rem at 82% 20%, rgba(248,248,246,0.07), rgba(248,248,246,0.02) 42%, rgba(10,10,10,0) 74%)",
+      "radial-gradient(58rem 32rem at 14% 22%, rgba(248,248,246,0.08), rgba(248,248,246,0.03) 42%, rgba(10,10,10,0) 74%), radial-gradient(54rem 30rem at 86% 18%, rgba(248,248,246,0.07), rgba(248,248,246,0.025) 40%, rgba(10,10,10,0) 74%)",
     secondary:
-      "radial-gradient(38rem 28rem at 28% 72%, rgba(248,248,246,0.045), rgba(10,10,10,0) 72%), radial-gradient(42rem 30rem at 72% 66%, rgba(248,248,246,0.055), rgba(10,10,10,0) 74%)",
+      "radial-gradient(52rem 28rem at 30% 72%, rgba(248,248,246,0.04), rgba(10,10,10,0) 72%), radial-gradient(56rem 28rem at 72% 68%, rgba(248,248,246,0.05), rgba(10,10,10,0) 74%)",
     tertiary:
-      "linear-gradient(180deg, rgba(248,248,246,0.02) 0%, rgba(248,248,246,0) 24%, rgba(248,248,246,0) 72%, rgba(248,248,246,0.03) 100%)"
+      "radial-gradient(34rem 18rem at 44% 46%, rgba(248,248,246,0.025), rgba(10,10,10,0) 72%), radial-gradient(28rem 16rem at 62% 58%, rgba(248,248,246,0.018), rgba(10,10,10,0) 76%)"
   },
   library: {
     base:

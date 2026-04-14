@@ -19,7 +19,7 @@ interface StringState {
   opacity: number;
 }
 
-const DURATION = 2.15;
+const DURATION = 2.4;
 
 export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
   const overlayRef = useRef<HTMLDivElement | null>(null);
@@ -33,18 +33,18 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
 
       return Array.from({ length: 5 }, (_, index) => ({
         x: center + (index - 2) * gap,
-        rise: 0.12,
+        rise: 0,
         warm: 0,
         amplitude: 0,
         phase: index * 0.2,
         fall: 0,
         drift: [-32, -16, 0, 16, 32][index],
-        opacity: 1
+        opacity: 0
       }));
     },
     [viewport]
   );
-  const glow = useRef({ x: -0.08, opacity: 0.14 });
+  const glow = useRef({ x: -0.08, opacity: 0.1 });
 
   useLayoutEffect(() => {
     const updateViewport = () => {
@@ -74,13 +74,14 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
         gsap.delayedCall(0.02, finish);
       }
     });
-    const fallbackTimeout = window.setTimeout(finish, 2900);
+    const fallbackTimeout = window.setTimeout(finish, 3300);
 
     strings.forEach((string, index) => {
       timeline.to(
         string,
         {
           rise: 1,
+          opacity: 1,
           duration: 0.66,
           ease: "power2.out"
         },
@@ -90,12 +91,12 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
 
     timeline.to(
       glow.current,
-      {
-        x: 1.06,
-        opacity: 0.72,
-        duration: 0.76,
-        ease: "power1.inOut"
-      },
+        {
+          x: 1.06,
+          opacity: 0.72,
+          duration: 0.86,
+          ease: "power1.inOut"
+        },
       0.56
     );
 
@@ -105,7 +106,7 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
         {
           warm: 1,
           amplitude: 0.8 + index * 0.02,
-          duration: 0.42,
+          duration: 0.48,
           ease: "sine.out"
         },
         0.78
@@ -117,7 +118,7 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
         string,
         {
           amplitude: 0.34 + index * 0.02,
-          duration: 0.5,
+          duration: 0.58,
           ease: "sine.inOut"
         },
         1.18
@@ -128,10 +129,10 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
       overlayRef.current,
       {
         backgroundColor: "#111111",
-        duration: 0.62,
+        duration: 0.78,
         ease: "power1.inOut"
       },
-      1.5
+      1.62
     );
 
     strings.forEach((string) => {
@@ -140,10 +141,10 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
         {
           fall: 1,
           opacity: 0,
-          duration: 0.7,
+          duration: 0.88,
           ease: "power2.in"
         },
-        1.5
+        1.62
       );
     });
 

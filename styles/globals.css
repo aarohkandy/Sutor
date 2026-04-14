@@ -27,7 +27,7 @@ body {
 }
 
 body {
-  font-family: var(--font-inter), sans-serif;
+  font-family: "Inter", sans-serif;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
@@ -83,6 +83,8 @@ textarea {
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
+  isolation: isolate;
+  contain: paint;
 }
 
 .page-atmosphere__base,
@@ -95,35 +97,37 @@ textarea {
 .page-atmosphere__fog {
   inset: -12%;
   background-repeat: no-repeat;
-  mix-blend-mode: screen;
-  opacity: 0.62;
-  will-change: transform;
+  opacity: 0.5;
+  filter: blur(28px);
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .page-atmosphere__fog--primary {
   animation: fogDrift 28s ease-in-out infinite alternate;
+  opacity: 0.54;
 }
 
 .page-atmosphere__fog--secondary {
   animation: fogSway 34s ease-in-out infinite alternate;
-  opacity: 0.48;
+  opacity: 0.38;
 }
 
 .page-atmosphere__fog--tertiary {
   animation: fogPulse 22s ease-in-out infinite alternate;
-  opacity: 0.26;
+  opacity: 0.22;
+  filter: blur(38px);
 }
 
 .page-atmosphere__grain {
-  background-image: repeating-linear-gradient(
-    112deg,
-    rgba(248, 248, 246, 0.02) 0,
-    rgba(248, 248, 246, 0.02) 1px,
-    transparent 1px,
-    transparent 18px
-  );
-  opacity: 0.12;
-  mix-blend-mode: screen;
+  background-image:
+    radial-gradient(46rem 28rem at 18% 28%, rgba(248, 248, 246, 0.022), transparent 70%),
+    radial-gradient(44rem 26rem at 80% 24%, rgba(248, 248, 246, 0.018), transparent 72%),
+    radial-gradient(40rem 24rem at 34% 78%, rgba(248, 248, 246, 0.014), transparent 72%),
+    radial-gradient(42rem 24rem at 72% 74%, rgba(248, 248, 246, 0.012), transparent 70%);
+  opacity: 0.18;
+  filter: blur(40px);
+  animation: fogBloom 36s ease-in-out infinite alternate;
 }
 
 @keyframes fogDrift {
@@ -162,5 +166,20 @@ textarea {
   100% {
     transform: translate3d(-1%, 1%, 0) scale(1.08);
     opacity: 0.22;
+  }
+}
+
+@keyframes fogBloom {
+  0% {
+    transform: translate3d(-1%, 0, 0) scale(1);
+    opacity: 0.24;
+  }
+  50% {
+    transform: translate3d(1%, -1%, 0) scale(1.04);
+    opacity: 0.32;
+  }
+  100% {
+    transform: translate3d(2%, 1%, 0) scale(1.08);
+    opacity: 0.26;
   }
 }

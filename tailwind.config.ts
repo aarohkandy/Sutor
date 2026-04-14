@@ -20,10 +20,12 @@ const config: Config = {
       },
       fontFamily: {
         body: [
-          "var(--font-inter)"
+          "Inter",
+          "sans-serif"
         ],
         display: [
-          "var(--font-eb-garamond)"
+          "\"EB Garamond\"",
+          "serif"
         ]
       },
       letterSpacing: {

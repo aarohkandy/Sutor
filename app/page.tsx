@@ -55,27 +55,31 @@ export default function HomePage() {
       {introVisible ? <LoadingAnimation onComplete={finishIntro} /> : null}
       <Atmosphere variant="home" />
 
-      <div className={`relative z-10 mx-auto flex h-[calc(100vh-3rem)] max-w-6xl flex-col transition-opacity duration-200 sm:h-[calc(100vh-4rem)] ${ready ? "opacity-100" : "opacity-0"}`}>
+      <div className={`relative z-10 mx-auto flex h-[calc(100vh-3rem)] max-w-[88rem] flex-col transition-opacity duration-200 sm:h-[calc(100vh-4rem)] ${ready ? "opacity-100" : "opacity-0"}`}>
         <header className="flex items-start justify-between text-sm">
           <div className="font-display text-lg uppercase tracking-caps text-warm">Sutor</div>
           <div className="pt-1 text-right text-xs text-muted">Practice. Analyze. Improve.</div>
         </header>
 
         <section className="flex flex-1 flex-col items-center justify-center">
-          <div className="max-w-3xl text-center">
-            <h1 className="font-display text-5xl leading-tight tracking-tight text-warm sm:text-6xl">
-              Hear what you&apos;re missing.
+          <div className="w-full max-w-5xl text-center">
+            <h1 className="font-display text-5xl leading-tight tracking-tight text-warm sm:text-6xl lg:text-[5.35rem]">
+              <span>Hear what </span>
+              <span className="relative inline-block px-[0.04em] pb-[0.08em]">
+                you&apos;re
+                <span className="absolute inset-x-[0.08em] bottom-0 h-px bg-accent opacity-90" />
+              </span>
+              <span> missing.</span>
             </h1>
-            <div className="mx-auto mt-3 h-px w-16 bg-accent" />
           </div>
 
-          <div className="mt-14 grid w-full max-w-4xl gap-4 md:grid-cols-3">
+          <div className="mt-14 grid w-full max-w-5xl gap-5 md:grid-cols-3">
             {instruments.map((instrument) => (
               <button
                 key={instrument}
                 type="button"
                 onClick={() => router.push(`/practice/${instrument}`)}
-                className="group border border-border bg-[rgba(17,17,17,0.5)] px-8 py-12 text-center transition-[border-color,background-color] duration-200 hover:border-accent hover:bg-[rgba(17,17,17,0.72)]"
+                className="group border border-[rgba(248,248,246,0.2)] bg-[rgba(248,248,246,0.06)] px-8 py-14 text-center transition-[border-color,background-color] duration-200 hover:border-accent hover:bg-[rgba(248,248,246,0.1)]"
               >
                 <span className="font-display text-3xl capitalize text-warm">{instrument}</span>
               </button>
