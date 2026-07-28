@@ -30,7 +30,7 @@ npm run dev
 
 ## Refresh The Mutopia Catalog
 
-Sutor ships with a baked curated catalog in [data/catalog.json](/C:/Users/aak/Downloads/Skyview/data/catalog.json). To generate a broader public-domain catalog from a local clone of `MutopiaProject/MutopiaProject`, point the builder at the repo’s `ftp/` tree:
+Sutor ships with a baked curated catalog in [data/catalog.json](data/catalog.json). To generate a broader public-domain catalog from a local clone of `MutopiaProject/MutopiaProject`, point the builder at the repo’s `ftp/` tree:
 
 ```bash
 node scripts/build-mutopia-catalog.mjs --source /path/to/MutopiaProject/ftp --stdout
