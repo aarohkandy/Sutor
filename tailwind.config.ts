@@ -1,11 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./lib/**/*.{ts,tsx}"
-  ],
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./lib/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -19,14 +15,8 @@ const config: Config = {
         warm: "#F8F8F6"
       },
       fontFamily: {
-        body: [
-          "Inter",
-          "sans-serif"
-        ],
-        display: [
-          "\"EB Garamond\"",
-          "serif"
-        ]
+        body: ["Inter", "sans-serif"],
+        display: ['"EB Garamond"', "serif"]
       },
       letterSpacing: {
         caps: "0.22em"

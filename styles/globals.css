@@ -63,7 +63,12 @@ textarea {
   position: relative;
   min-height: 100vh;
   background:
-    radial-gradient(64rem 42rem at 50% 0%, rgba(248, 248, 246, 0.05), rgba(248, 248, 246, 0.01) 38%, rgba(10, 10, 10, 0) 74%),
+    radial-gradient(
+      64rem 42rem at 50% 0%,
+      rgba(248, 248, 246, 0.05),
+      rgba(248, 248, 246, 0.01) 38%,
+      rgba(10, 10, 10, 0) 74%
+    ),
     linear-gradient(180deg, #111111 0%, #0a0a0a 56%, #0a0a0a 100%);
   isolation: isolate;
 }

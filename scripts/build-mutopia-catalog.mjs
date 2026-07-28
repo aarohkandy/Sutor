@@ -85,7 +85,11 @@ async function buildCatalog(sourceRoot) {
 
   return results
     .filter((entry) => entry.publicDomain)
-    .sort((left, right) => `${left.instrument}:${left.composer}:${left.title}`.localeCompare(`${right.instrument}:${right.composer}:${right.title}`));
+    .sort((left, right) =>
+      `${left.instrument}:${left.composer}:${left.title}`.localeCompare(
+        `${right.instrument}:${right.composer}:${right.title}`
+      )
+    );
 }
 
 async function main() {
@@ -94,7 +98,8 @@ async function main() {
   const outIndex = args.indexOf("--out");
   const stdout = args.includes("--stdout");
   const sourceRoot = sourceIndex >= 0 ? args[sourceIndex + 1] : path.join(process.cwd(), ".mutopia-source", "ftp");
-  const outputPath = outIndex >= 0 ? args[outIndex + 1] : path.join(process.cwd(), "data", "generated-mutopia-catalog.json");
+  const outputPath =
+    outIndex >= 0 ? args[outIndex + 1] : path.join(process.cwd(), "data", "generated-mutopia-catalog.json");
 
   const catalog = await buildCatalog(sourceRoot);
   const json = JSON.stringify(catalog, null, 2);

@@ -24,9 +24,7 @@ export function MusicLibrary({ instrument, pieces }: MusicLibraryProps) {
 
   const filtered = useMemo(() => searchCatalog(pieces, query), [pieces, query]);
   const selected =
-    filtered.find((piece) => piece.id === selectedId) ??
-    pieces.find((piece) => piece.id === selectedId) ??
-    null;
+    filtered.find((piece) => piece.id === selectedId) ?? pieces.find((piece) => piece.id === selectedId) ?? null;
   const suggestions = pieces.filter((piece) => piece.suggested);
 
   const openPiece = (piece: LibraryPiece) => {
@@ -128,7 +126,9 @@ export function MusicLibrary({ instrument, pieces }: MusicLibraryProps) {
                   >
                     <div>
                       <div className="font-display text-2xl text-warm">{piece.title}</div>
-                      {piece.subtitle ? <div className="mt-2 text-xs uppercase tracking-caps text-muted">{piece.subtitle}</div> : null}
+                      {piece.subtitle ? (
+                        <div className="mt-2 text-xs uppercase tracking-caps text-muted">{piece.subtitle}</div>
+                      ) : null}
                     </div>
                     <div className="self-center text-sm text-muted">{piece.composer}</div>
                   </button>

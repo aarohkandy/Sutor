@@ -17,9 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
         />
       </head>
-      <body className="editorial-shell">
-        {children}
-      </body>
+      <body className="editorial-shell">{children}</body>
     </html>
   );
 }

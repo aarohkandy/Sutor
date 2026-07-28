@@ -2,6 +2,7 @@ node_modules/
 .next/
 .next-dev/
 .mutopia-source/
+*.tsbuildinfo
 *.html
 npm-debug.log*
 yarn-debug.log*

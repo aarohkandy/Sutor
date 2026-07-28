@@ -138,7 +138,11 @@ export function AnalysisPipeline({
         <Atmosphere variant="record" />
         <div className="relative z-10 w-full max-w-md space-y-6">
           <h2 className="font-display text-4xl text-warm">
-            {state === "needs_url" ? "Add your analysis brain" : state === "offline" ? "Your analysis brain is offline." : "Analysis hit a snag."}
+            {state === "needs_url"
+              ? "Add your analysis brain"
+              : state === "offline"
+                ? "Your analysis brain is offline."
+                : "Analysis hit a snag."}
           </h2>
           <p className="text-sm text-muted">
             {state === "needs_url"

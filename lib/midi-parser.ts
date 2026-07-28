@@ -170,8 +170,12 @@ function parseTracks(
 
   return {
     notes: notes.sort((left, right) => left.tick - right.tick),
-    tempos: (tempos.length > 0 ? tempos : [{ tick: 0, microsecondsPerQuarter: 500000 }]).sort((left, right) => left.tick - right.tick),
-    signatures: (signatures.length > 0 ? signatures : [{ tick: 0, numerator: 4, denominator: 4 }]).sort((left, right) => left.tick - right.tick)
+    tempos: (tempos.length > 0 ? tempos : [{ tick: 0, microsecondsPerQuarter: 500000 }]).sort(
+      (left, right) => left.tick - right.tick
+    ),
+    signatures: (signatures.length > 0 ? signatures : [{ tick: 0, numerator: 4, denominator: 4 }]).sort(
+      (left, right) => left.tick - right.tick
+    )
   };
 }
 

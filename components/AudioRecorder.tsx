@@ -115,7 +115,9 @@ export function AudioRecorder({ noiseSensitivity, onOnset, onFinished }: AudioRe
     recognition.lang = "en-US";
     recognition.onresult = (event) => {
       for (let index = event.resultIndex; index < event.results.length; index += 1) {
-        const transcript = Array.from(event.results[index]).map((result) => result.transcript).join(" ");
+        const transcript = Array.from(event.results[index])
+          .map((result) => result.transcript)
+          .join(" ");
         detectSpeechCommand(transcript);
       }
     };
@@ -283,7 +285,8 @@ export function AudioRecorder({ noiseSensitivity, onOnset, onFinished }: AudioRe
       <div className="border border-line bg-[rgba(17,17,17,0.68)] px-6 py-8 text-center">
         <h2 className="font-display text-3xl text-warm">Microphone access is needed</h2>
         <p className="mx-auto mt-4 max-w-xl text-sm text-muted">
-          Allow microphone access in your browser&apos;s site settings, then try recording again. In Chrome and Edge this is in the lock icon near the address bar. In Safari, check Settings for This Website.
+          Allow microphone access in your browser&apos;s site settings, then try recording again. In Chrome and Edge
+          this is in the lock icon near the address bar. In Safari, check Settings for This Website.
         </p>
       </div>
     );

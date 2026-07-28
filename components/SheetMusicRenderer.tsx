@@ -90,8 +90,15 @@ export function SheetMusicRenderer({
 
   return (
     <div className="overflow-hidden border border-line bg-[rgba(17,17,17,0.72)]">
-      <div className="h-0.5 origin-left bg-accent transition-transform duration-100" style={{ transform: `scaleX(${countdownProgress})` }} />
-      <button type="button" onClick={onAdvance} className="block w-full bg-[rgba(248,248,246,0.02)] transition-colors duration-200 hover:bg-[rgba(248,248,246,0.04)]">
+      <div
+        className="h-0.5 origin-left bg-accent transition-transform duration-100"
+        style={{ transform: `scaleX(${countdownProgress})` }}
+      />
+      <button
+        type="button"
+        onClick={onAdvance}
+        className="block w-full bg-[rgba(248,248,246,0.02)] transition-colors duration-200 hover:bg-[rgba(248,248,246,0.04)]"
+      >
         <div className="min-h-[28rem] p-4 sm:p-8">
           {error ? (
             <div className="flex min-h-[24rem] items-center justify-center text-sm text-muted">{error}</div>

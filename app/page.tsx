@@ -55,7 +55,9 @@ export default function HomePage() {
       {introVisible ? <LoadingAnimation onComplete={finishIntro} /> : null}
       <Atmosphere variant="home" />
 
-      <div className={`relative z-10 mx-auto flex h-[calc(100vh-3rem)] max-w-[88rem] flex-col transition-opacity duration-200 sm:h-[calc(100vh-4rem)] ${ready ? "opacity-100" : "opacity-0"}`}>
+      <div
+        className={`relative z-10 mx-auto flex h-[calc(100vh-3rem)] max-w-[88rem] flex-col transition-opacity duration-200 sm:h-[calc(100vh-4rem)] ${ready ? "opacity-100" : "opacity-0"}`}
+      >
         <header className="flex items-start justify-between text-sm">
           <div className="font-display text-lg uppercase tracking-caps text-warm">Sutor</div>
           <div className="pt-1 text-right text-xs text-muted">Practice. Analyze. Improve.</div>

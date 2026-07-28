@@ -26,24 +26,21 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
   const completedRef = useRef(false);
   const [viewport, setViewport] = useState({ width: 1280, height: 800 });
   const [, forceRender] = useState(0);
-  const strings = useMemo<StringState[]>(
-    () => {
-      const center = viewport.width / 2;
-      const gap = Math.max(20, Math.min(viewport.width * 0.03, 34));
+  const strings = useMemo<StringState[]>(() => {
+    const center = viewport.width / 2;
+    const gap = Math.max(20, Math.min(viewport.width * 0.03, 34));
 
-      return Array.from({ length: 5 }, (_, index) => ({
-        x: center + (index - 2) * gap,
-        rise: 0,
-        warm: 0,
-        amplitude: 0,
-        phase: index * 0.2,
-        fall: 0,
-        drift: [-32, -16, 0, 16, 32][index],
-        opacity: 0
-      }));
-    },
-    [viewport]
-  );
+    return Array.from({ length: 5 }, (_, index) => ({
+      x: center + (index - 2) * gap,
+      rise: 0,
+      warm: 0,
+      amplitude: 0,
+      phase: index * 0.2,
+      fall: 0,
+      drift: [-32, -16, 0, 16, 32][index],
+      opacity: 0
+    }));
+  }, [viewport]);
   const glow = useRef({ x: -0.08, opacity: 0.1 });
 
   useLayoutEffect(() => {
@@ -91,12 +88,12 @@ export function LoadingAnimation({ onComplete }: LoadingAnimationProps) {
 
     timeline.to(
       glow.current,
-        {
-          x: 1.06,
-          opacity: 0.72,
-          duration: 0.86,
-          ease: "power1.inOut"
-        },
+      {
+        x: 1.06,
+        opacity: 0.72,
+        duration: 0.86,
+        ease: "power1.inOut"
+      },
       0.56
     );
 

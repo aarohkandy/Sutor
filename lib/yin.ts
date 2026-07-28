@@ -26,7 +26,7 @@ export function yin(frame: Float32Array, sampleRate: number, threshold = 0.12): 
   let running = 0;
   for (let tau = 1; tau < tauMax; tau += 1) {
     running += difference[tau];
-    cumulative[tau] = difference[tau] * tau / (running || 1);
+    cumulative[tau] = (difference[tau] * tau) / (running || 1);
   }
 
   let bestTau = -1;
