@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createLiveOnsetState, processLiveOnsetFrame } from "@/lib/live-onset";
 import type { SpeechEvent } from "@/lib/types";
 
@@ -55,6 +55,11 @@ export function AudioRecorder({ noiseSensitivity, onOnset, onFinished }: AudioRe
   const phaseRef = useRef<RecorderPhase>("idle");
   const compatibilityModeRef = useRef(false);
   const onsetStateRef = useRef(createLiveOnsetState());
+  const onOnsetRef = useRef(onOnset);
+
+  useEffect(() => {
+    onOnsetRef.current = onOnset;
+  }, [onOnset]);
 
   const updatePhase = (value: RecorderPhase) => {
     phaseRef.current = value;
@@ -194,7 +199,7 @@ export function AudioRecorder({ noiseSensitivity, onOnset, onFinished }: AudioRe
     const result = processLiveOnsetFrame(frame, sampleRate, timeMs, noiseFloorRef.current, onsetStateRef.current);
     if (result.onset) {
       onsetCountRef.current += 1;
-      onOnset(onsetCountRef.current, timeMs);
+      onOnsetRef.current(onsetCountRef.current, timeMs);
     }
   };
 
@@ -241,7 +246,7 @@ export function AudioRecorder({ noiseSensitivity, onOnset, onFinished }: AudioRe
           }
           if (phaseRef.current === "recording" && event.data.onset) {
             onsetCountRef.current += 1;
-            onOnset(onsetCountRef.current, event.data.timeMs);
+            onOnsetRef.current(onsetCountRef.current, event.data.timeMs);
           }
         };
         source.connect(node);

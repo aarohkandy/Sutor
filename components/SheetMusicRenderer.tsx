@@ -64,27 +64,35 @@ export function SheetMusicRenderer({
     }
 
     let cancelled = false;
+    let renderTask: pdfjs.RenderTask | null = null;
 
     (async () => {
-      const page = await documentProxy.getPage(currentPage + 1);
-      const viewport = page.getViewport({ scale: 1.5 });
-      const canvas = canvasRef.current;
-      if (!canvas || cancelled) {
-        return;
-      }
+      try {
+        const page = await documentProxy.getPage(currentPage + 1);
+        const viewport = page.getViewport({ scale: 1.5 });
+        const canvas = canvasRef.current;
+        if (!canvas || cancelled) {
+          return;
+        }
 
-      const context = canvas.getContext("2d");
-      if (!context) {
-        return;
-      }
+        const context = canvas.getContext("2d");
+        if (!context) {
+          return;
+        }
 
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      await page.render({ canvasContext: context, viewport }).promise;
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        renderTask = page.render({ canvasContext: context, viewport });
+        await renderTask.promise;
+      } catch {
+        // Ignore render errors, including the RenderingCancelledException raised
+        // when a superseded render is cancelled below.
+      }
     })();
 
     return () => {
       cancelled = true;
+      renderTask?.cancel();
     };
   }, [currentPage, documentProxy]);
 

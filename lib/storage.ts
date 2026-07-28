@@ -53,7 +53,11 @@ export function safeSessionSet(key: string, value: unknown): void {
     return;
   }
 
-  window.sessionStorage.setItem(key, JSON.stringify(value));
+  try {
+    window.sessionStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Ignore quota/availability errors so a completed analysis is not misreported as a failure.
+  }
 }
 
 export function safeSessionRemove(key: string): void {
