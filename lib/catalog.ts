@@ -49,10 +49,6 @@ export function getCatalogForInstrument(instrument: Instrument): LibraryPiece[] 
   return getCatalog().filter((piece) => piece.instrument === instrument);
 }
 
-export function getSuggestedPieces(instrument: Instrument): LibraryPiece[] {
-  return getCatalogForInstrument(instrument).filter((piece) => piece.suggested);
-}
-
 export function searchCatalog(pieces: LibraryPiece[], query: string): LibraryPiece[] {
   const normalizedQuery = normalizeText(query);
   if (!normalizedQuery) {

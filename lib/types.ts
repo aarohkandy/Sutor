@@ -64,13 +64,6 @@ export interface AnalysisStats {
   averageHnr: number;
 }
 
-export interface AnalysisResult {
-  paired: AlignedNote[];
-  stats: AnalysisStats;
-  actualNotes: ActualNote[];
-  summary: string;
-}
-
 export interface RecordingSessionPayload {
   piece: LibraryPiece;
   expectedNotes: ExpectedNote[];
